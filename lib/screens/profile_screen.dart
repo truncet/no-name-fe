@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class FirstScreen extends StatelessWidget {
+import '../widgets/profile/profile_form.dart';
+
+class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('No-Name'),
+        title: Text('Complete-Profile'),
         actions: [
           DropdownButton(
             items: [
@@ -27,6 +29,7 @@ class FirstScreen extends StatelessWidget {
           )
         ],
       ),
+      body: ProfileForm(),
     );
   }
 }

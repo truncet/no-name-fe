@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 import './screens/auth_screen.dart';
-import './screens/first_screen.dart';
+import 'screens/profile_screen.dart';
 import './providers/auth_provider.dart';
 
 void main() async {
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (ctx, userSnapshot) {
               if (userSnapshot.hasData) {
-                return FirstScreen();
+                return ProfileScreen();
               }
               return AuthScreen();
             }),

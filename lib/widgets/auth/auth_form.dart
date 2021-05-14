@@ -5,7 +5,7 @@ class AuthForm extends StatefulWidget {
   final void Function(
     String email,
     String password,
-    String userName,
+    String roleId,
     bool isLogin,
     BuildContext context,
   ) submitFn;
@@ -19,17 +19,26 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
-  String _role;
 
   var _isLogin = true;
 
   String _userEmail = '';
-  String _userName = '';
   String _userPassword = '';
+  String _role;
 
   void _trySubmit() {
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
+
+    if (!_isLogin && _role == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please select Role'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+      return;
+    }
 
     if (isValid) {
       _formKey.currentState.save();
@@ -38,7 +47,7 @@ class _AuthFormState extends State<AuthForm> {
     widget.submitFn(
       _userEmail.trim(),
       _userPassword.trim(),
-      _userName.trim(),
+      _role,
       _isLogin,
       context,
     );
@@ -54,7 +63,7 @@ class _AuthFormState extends State<AuthForm> {
               SimpleDialogOption(
                 child: const Text('Work'),
                 onPressed: () {
-                  _role = 'Work';
+                  _role = "worker";
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -67,7 +76,7 @@ class _AuthFormState extends State<AuthForm> {
               SimpleDialogOption(
                 child: const Text('Search'),
                 onPressed: () {
-                  _role = 'Search';
+                  _role = "searcher";
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -112,22 +121,6 @@ class _AuthFormState extends State<AuthForm> {
                       labelText: 'Email Address',
                     ),
                   ),
-                  if (!_isLogin)
-                    TextFormField(
-                      key: ValueKey('username'),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter valid username';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _userName = value;
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Username',
-                      ),
-                    ),
                   TextFormField(
                     key: ValueKey('password'),
                     validator: (value) {
