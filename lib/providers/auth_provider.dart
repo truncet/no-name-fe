@@ -4,14 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 class Auth with ChangeNotifier {
-  String _token;
   DateTime _expiryDate;
   String _userId;
   UserCredential _authResult;
   final _auth = FirebaseAuth.instance;
+  String _token;
 
   String get userId {
-    return _userId;
+    return _auth.currentUser.uid;
   }
 
   String get token {
@@ -42,5 +42,11 @@ class Auth with ChangeNotifier {
         email: email, password: password);
     _token = await _auth.currentUser.getIdToken();
     notifyListeners();
+  }
+
+  Future<String> autoToken() async {
+    _token = await _auth.currentUser.getIdToken();
+    notifyListeners();
+    return _token;
   }
 }

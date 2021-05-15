@@ -29,7 +29,6 @@ class Profile with ChangeNotifier {
     _age = profile == null ? -1 : profile._age;
     _profession = profile == null ? '' : profile._profession;
     _location = profile == null ? '' : profile._location;
-    notifyListeners();
   }
 
   void sendProfile(
