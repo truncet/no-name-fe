@@ -58,6 +58,7 @@ class Profile with ChangeNotifier {
           'age': _age,
           'profession': _profession,
           'location': _location,
+          'number': _number,
         }));
     notifyListeners();
     return;
