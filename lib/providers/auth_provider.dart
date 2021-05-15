@@ -15,9 +15,7 @@ class Auth with ChangeNotifier {
   }
 
   String get token {
-    if (_token != null &&
-        _expiryDate != null &&
-        _expiryDate.isAfter(DateTime.now())) return _token;
+    return _token;
   }
 
   Future<void> signUp(String email, String password, String role) async {
@@ -35,8 +33,7 @@ class Auth with ChangeNotifier {
           'email': email,
           "role": role,
         }));
-    print(response);
-    return;
+    notifyListeners();
     //final response = await http.post(post_url)
   }
 
@@ -44,5 +41,6 @@ class Auth with ChangeNotifier {
     _authResult = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
     _token = await _auth.currentUser.getIdToken();
+    notifyListeners();
   }
 }

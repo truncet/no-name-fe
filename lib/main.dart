@@ -4,8 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 import './screens/auth_screen.dart';
-import 'screens/profile_screen.dart';
+import './screens/profile_screen.dart';
+import './screens/dashboard_screen.dart';
+
 import './providers/auth_provider.dart';
+import './providers/profile_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +24,12 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (ctx) => Auth(),
-        )
+        ),
+        ChangeNotifierProxyProvider<Auth, Profile>(
+            create: (_) => Profile(),
+            update: (ctx, auth, previousProfile) {
+              return previousProfile..update(auth.token, previousProfile);
+            })
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -38,13 +46,17 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (ctx, userSnapshot) {
-              if (userSnapshot.hasData) {
-                return ProfileScreen();
-              }
-              return AuthScreen();
-            }),
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (ctx, userSnapshot) {
+            if (userSnapshot.hasData) {
+              return ProfileScreen();
+            }
+            return AuthScreen();
+          },
+        ),
+        routes: {
+          DashboardScreen.routeName: (ctx) => DashboardScreen(),
+        },
       ),
     );
   }
