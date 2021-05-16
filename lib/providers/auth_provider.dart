@@ -45,8 +45,9 @@ class Auth with ChangeNotifier {
   }
 
   Future<String> autoToken() async {
-    _token = await _auth.currentUser.getIdToken();
-    notifyListeners();
+    _token = _auth.currentUser == null || _auth == null
+        ? null
+        : await _auth.currentUser.getIdToken();
     return _token;
   }
 }

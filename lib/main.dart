@@ -28,11 +28,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProxyProvider<Auth, Profile>(
             create: (_) => Profile(),
             update: (ctx, auth, previousProfile) {
-              return previousProfile..update(auth.token, previousProfile);
+              return previousProfile..update(auth, previousProfile);
             })
       ],
-      child: Consumer<Auth>(
-        builder: (ctx, auth, _) => MaterialApp(
+      child: Consumer<Profile>(
+        builder: (ctx, profile, _) => MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
             // This is the theme of your application.
@@ -46,17 +46,17 @@ class MyApp extends StatelessWidget {
             // is not restarted.
             primarySwatch: Colors.blue,
           ),
-          home: FutureBuilder(
-            future: auth.autoToken(),
-            builder: (ctx, autosnapshot) => StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (ctx, userSnapshot) {
-                if (userSnapshot.hasData) {
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (ctx, userSnapshot) {
+              if (userSnapshot.hasData) {
+                if (userSnapshot.data != null) {
+                  // if (profile.profileCompleted) return DashboardScreen();
                   return ProfileScreen();
                 }
-                return AuthScreen();
-              },
-            ),
+              }
+              return AuthScreen();
+            },
           ),
           routes: {
             DashboardScreen.routeName: (ctx) => DashboardScreen(),

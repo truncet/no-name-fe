@@ -32,7 +32,7 @@ class _ProfileFormState extends State<ProfileForm> {
     }
     Provider.of<Profile>(context, listen: false).sendProfile(
         _userName, _age, _profession, _location, number.toString());
-    Navigator.of(context).pushReplacementNamed(DashboardScreen.routeName);
+    Navigator.of(context).pushNamed(DashboardScreen.routeName);
   }
 
   @override
@@ -132,7 +132,12 @@ class _ProfileFormState extends State<ProfileForm> {
               ),
             ),
             ElevatedButton(
-                onPressed: () => _submitForm(context), child: Text('Submit'))
+                onPressed: () => _submitForm(context), child: Text('Submit')),
+            ElevatedButton(
+              onPressed: () =>
+                  Provider.of<Profile>(context, listen: false).printToken(),
+              child: Text('token'),
+            )
           ],
         ),
       ),
