@@ -15,6 +15,7 @@ class Auth with ChangeNotifier {
   }
 
   String get token {
+    print(_token);
     return _token;
   }
 
@@ -30,7 +31,6 @@ class Auth with ChangeNotifier {
     final response = await http.post(post_url,
         headers: headers,
         body: json.encode({
-          'email': email,
           "role": role,
         }));
     notifyListeners();

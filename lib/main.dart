@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
               if (userSnapshot.hasData) {
                 if (userSnapshot.data != null) {
                   // if (profile.profileCompleted) return DashboardScreen();
-                  return ProfileScreen();
+                  return DashboardScreen();
                 }
               }
               return AuthScreen();

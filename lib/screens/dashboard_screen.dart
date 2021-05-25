@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/rendering.dart';
 
-class DashboardScreen extends StatelessWidget {
+import '../widgets/discover_dashboard.dart';
+import '../widgets/home_dashboard.dart';
+import '../widgets/profile_dashboard.dart';
+
+class DashboardScreen extends StatefulWidget {
   static const routeName = '/dashboard';
+
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  int _selectedIndex = 1;
+  List<dynamic> _widgets = [
+    HomeDashboard(),
+    DiscoverDashboard(),
+    ProfileDashboard(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +47,34 @@ class DashboardScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Text('This is Dashboard'),
+      body: _widgets[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        mouseCursor: MouseCursor.uncontrolled,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+            activeIcon: Icon(Icons.home_filled),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search_outlined),
+            label: 'Discover',
+            activeIcon: Icon(Icons.search_rounded),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.info_outline_rounded),
+            label: 'Profile',
+            activeIcon: Icon(Icons.info),
+          ),
+        ],
+        selectedItemColor: Colors.blue,
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+      ),
     );
   }
 }
