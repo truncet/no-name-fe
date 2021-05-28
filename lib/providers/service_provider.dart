@@ -16,6 +16,10 @@ class ServiceProvider with ChangeNotifier {
 
   List<Service> _services = [];
 
+  List<Service> get services {
+    return _services;
+  }
+
   void update(AuthProvider tok, ServiceProvider service) async {
     await tok.autoToken();
     token = tok.token;
@@ -26,7 +30,8 @@ class ServiceProvider with ChangeNotifier {
     _price = service == null ? '' : service._price;
   }
 
-  void getMyListObject(List extractedData) {
+  List<Service> getMyListObject(List extractedData) {
+    List<Service> serviceDataExtracted = [];
     for (var i = 0; i < extractedData.length; i++) {
       final service = extractedData[i] as Map<String, dynamic>;
       final userProfile = service["user"];
@@ -47,11 +52,12 @@ class ServiceProvider with ChangeNotifier {
         workType: service['work_type'],
         profile: profile,
       );
-      _services.add(serviceData);
+      serviceDataExtracted.add(serviceData);
     }
+    return serviceDataExtracted;
   }
 
-  Future<List<Service>> fetchServices() async {
+  Future<void> fetchServices() async {
     final url = Uri.parse("http://192.168.1.20:5000/service/getall");
     final headers = {
       'Content-type': 'application/json',
@@ -61,13 +67,14 @@ class ServiceProvider with ChangeNotifier {
       final response = await http.get(url, headers: headers);
       if (response.statusCode == 200) {
         final extractedData = json.decode(response.body);
-        getMyListObject(extractedData);
+        final serviceDataExtracted = getMyListObject(extractedData);
+        _services = serviceDataExtracted;
       }
     } catch (error) {
       print(error);
     }
     notifyListeners();
-    return _services;
+    return;
     //print(json.decode(response.bo));
   }
 }

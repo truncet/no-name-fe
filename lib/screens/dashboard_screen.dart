@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/rendering.dart';
 
-import '../widgets/discover_dashboard.dart';
-import '../widgets/home_dashboard.dart';
-import '../widgets/profile_dashboard.dart';
+import '../widgets/dashboard/discover_dashboard.dart';
+import '../widgets/dashboard/home_dashboard.dart';
+import '../widgets/dashboard/profile_dashboard.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const routeName = '/dashboard';
