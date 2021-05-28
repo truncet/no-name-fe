@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../models/auth.dart';
+
 class AuthForm extends StatefulWidget {
   final void Function(
-    String email,
-    String password,
-    String roleId,
-    bool isLogin,
+    Auth auth,
     BuildContext context,
   ) submitFn;
 
@@ -45,10 +44,12 @@ class _AuthFormState extends State<AuthForm> {
     }
 
     widget.submitFn(
-      _userEmail.trim(),
-      _userPassword.trim(),
-      _role,
-      _isLogin,
+      Auth(
+        userEmail: _userEmail.trim(),
+        userPassword: _userPassword.trim(),
+        role: _role,
+        isLogin: _isLogin,
+      ),
       context,
     );
   }

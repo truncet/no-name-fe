@@ -9,8 +9,7 @@ import '../providers/profile_provider.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final profileData =
-        Provider.of<Profile>(context, listen: false).fetchProfile();
+    Provider.of<ProfileProvider>(context, listen: false).fetchProfile();
     return Scaffold(
       appBar: LogoutAppBar(
         appBar: AppBar(),

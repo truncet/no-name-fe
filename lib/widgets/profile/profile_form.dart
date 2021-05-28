@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
-import '../../screens/dashboard_screen.dart';
 import '../../providers/profile_provider.dart';
+import '../../models/profile.dart';
 
 class ProfileForm extends StatefulWidget {
   @override
@@ -30,9 +30,15 @@ class _ProfileFormState extends State<ProfileForm> {
     } else {
       return;
     }
-    Provider.of<Profile>(context, listen: false).sendProfile(
-        _userName, _age, _profession, _location, number.toString());
-    Navigator.of(context).pushNamed(DashboardScreen.routeName);
+    Provider.of<ProfileProvider>(context, listen: false).sendProfile(Profile(
+      userName: _userName,
+      age: _age,
+      profession: _profession,
+      location: _location,
+      phone: number.toString(),
+    ));
+    //_userName, _age, _profession, _location, number.toString());
+    //Navigator.of(context).pushNamed(DashboardScreen.routeName);
   }
 
   @override
@@ -135,7 +141,8 @@ class _ProfileFormState extends State<ProfileForm> {
                 onPressed: () => _submitForm(context), child: Text('Submit')),
             ElevatedButton(
               onPressed: () =>
-                  Provider.of<Profile>(context, listen: false).printToken(),
+                  Provider.of<ProfileProvider>(context, listen: false)
+                      .printToken(),
               child: Text('token'),
             )
           ],

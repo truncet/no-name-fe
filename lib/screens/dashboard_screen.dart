@@ -62,9 +62,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             activeIcon: Icon(Icons.search_rounded),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.info_outline_rounded),
+            icon: Icon(Icons.account_box_outlined),
             label: 'Profile',
-            activeIcon: Icon(Icons.info),
+            activeIcon: Icon(Icons.account_box),
           ),
         ],
         selectedItemColor: Colors.blue,

@@ -23,15 +23,15 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => Auth(),
+          create: (ctx) => AuthProvider(),
         ),
-        ChangeNotifierProxyProvider<Auth, Profile>(
-            create: (_) => Profile(),
+        ChangeNotifierProxyProvider<AuthProvider, ProfileProvider>(
+            create: (_) => ProfileProvider(),
             update: (ctx, auth, previousProfile) {
               return previousProfile..update(auth, previousProfile);
             })
       ],
-      child: Consumer<Profile>(
+      child: Consumer<ProfileProvider>(
         builder: (ctx, profile, _) => MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(

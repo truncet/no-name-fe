@@ -5,7 +5,9 @@ import 'package:http/http.dart' as http;
 
 import './auth_provider.dart';
 
-class Profile with ChangeNotifier {
+import './../models/profile.dart';
+
+class ProfileProvider with ChangeNotifier {
   String _userName;
   int _age;
   String _profession;
@@ -30,7 +32,7 @@ class Profile with ChangeNotifier {
     return _profileCompleted;
   }
 
-  void update(Auth tok, Profile profile) async {
+  void update(AuthProvider tok, ProfileProvider profile) async {
     await tok.autoToken();
     token = tok.token;
     _userName = profile == null ? '' : profile._userName;
@@ -51,24 +53,19 @@ class Profile with ChangeNotifier {
       'Authorization': 'Bearer $token'
     };
     final response = await http.get(url, headers: headers);
-    final extractedData = json.decode(response.body) as List<dynamic>;
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    print(extractedData);
+    return;
     final usableData = extractedData[0] as Map<String, dynamic>;
     print(usableData);
   }
 
-  void sendProfile(
-    String userName,
-    int age,
-    String profession,
-    String location,
-    String phone,
-  ) async {
-    _userName = userName;
-    _age = age;
-    _profession = profession;
-    _location = location;
-    print(token);
-    _phone = phone;
+  void sendProfile(Profile profile) async {
+    _userName = profile.userName;
+    _age = profile.age;
+    _profession = profile.profession;
+    _location = profile.location;
+    _phone = profile.location;
     final put_url = Uri.parse("http://192.168.1.20:5000/user/profile");
     final headers = {
       'Content-type': 'application/json',
