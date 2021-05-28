@@ -8,7 +8,6 @@ class Profile with ChangeNotifier {
   final String profession;
   final String phone;
   final int age;
-  final bool profileComleted = false;
 
   Profile({
     this.id,

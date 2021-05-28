@@ -9,6 +9,7 @@ import './screens/dashboard_screen.dart';
 
 import './providers/auth_provider.dart';
 import './providers/profile_provider.dart';
+import './providers/service_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +30,12 @@ class MyApp extends StatelessWidget {
             create: (_) => ProfileProvider(),
             update: (ctx, auth, previousProfile) {
               return previousProfile..update(auth, previousProfile);
-            })
+            }),
+        ChangeNotifierProxyProvider<AuthProvider, ServiceProvider>(
+            create: (_) => ServiceProvider(),
+            update: (ctx, auth, previousService) {
+              return previousService..update(auth, previousService);
+            }),
       ],
       child: Consumer<ProfileProvider>(
         builder: (ctx, profile, _) => MaterialApp(

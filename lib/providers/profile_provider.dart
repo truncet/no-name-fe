@@ -56,8 +56,6 @@ class ProfileProvider with ChangeNotifier {
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
     print(extractedData);
     return;
-    final usableData = extractedData[0] as Map<String, dynamic>;
-    print(usableData);
   }
 
   void sendProfile(Profile profile) async {
