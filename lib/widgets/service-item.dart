@@ -1,45 +1,60 @@
 import 'package:flutter/material.dart';
 
+import '../screens/service_detail_screen.dart';
+
 class ServiceItem extends StatelessWidget {
   final String work;
   final String userName;
   final double price;
   final String workType;
+  final String id;
 
-  ServiceItem({this.userName, this.work, this.price, this.workType});
+  ServiceItem({this.id, this.userName, this.work, this.price, this.workType});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      margin: EdgeInsets.all(20),
-      height: 200,
-      width: 200,
-      child: GridTile(
-        header: GridTileBar(
-          backgroundColor: Colors.black26,
-          title: Text(
-            userName,
-            textAlign: TextAlign.center,
+    void bookNow(String id) {
+      Navigator.of(context)
+          .pushNamed(ServiceDetailScreen.routeName, arguments: id);
+    }
+
+    return InkWell(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: GridTile(
+          key: ValueKey(id),
+          header: GridTileBar(
+            backgroundColor: Colors.black26,
+            title: Text(work.toUpperCase(),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
-        ),
-        child: GestureDetector(
-          onTap: () {},
-          child: Stack(
-            children: [
-              Image.network(
-                "https://bit.ly/3p0fYLD",
-                fit: BoxFit.cover,
-              ),
-              Text(work),
-            ],
+          child: GestureDetector(
+            onTap: () {
+              print("gesture");
+            },
+            child: Image.network(
+              "https://bit.ly/2SdPlXv",
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        footer: GridTileBar(
-          backgroundColor: Colors.black87,
-          leading: Text(this.price.toString()),
-          trailing: IconButton(
-            icon: Icon(Icons.arrow_right),
-            onPressed: () {},
+          footer: GridTileBar(
+            backgroundColor: Colors.black54,
+            leading: Text(
+              "\$$price/$workType",
+              style: TextStyle(color: Colors.white),
+            ),
+            trailing: ElevatedButton(
+              onPressed: () {
+                bookNow(
+                  id,
+                );
+              },
+              child: Text('Details'),
+            ),
+            title: Text(
+              '$userName'.toUpperCase(),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       ),

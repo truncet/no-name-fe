@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:no_name/providers/booking_provider.dart';
 import 'package:provider/provider.dart';
 
 import './screens/auth_screen.dart';
+import './screens/book-status-screen.dart';
 import './screens/profile_screen.dart';
 import './screens/dashboard_screen.dart';
+import 'screens/service_detail_screen.dart';
 
 import './providers/auth_provider.dart';
 import './providers/profile_provider.dart';
@@ -27,15 +30,22 @@ class MyApp extends StatelessWidget {
           create: (ctx) => AuthProvider(),
         ),
         ChangeNotifierProxyProvider<AuthProvider, ProfileProvider>(
-            create: (_) => ProfileProvider(),
-            update: (ctx, auth, previousProfile) {
-              return previousProfile..update(auth, previousProfile);
-            }),
+          create: (_) => ProfileProvider(),
+          update: (ctx, auth, previousProfile) {
+            return previousProfile..update(auth, previousProfile);
+          },
+        ),
         ChangeNotifierProxyProvider<AuthProvider, ServiceProvider>(
-            create: (_) => ServiceProvider(),
-            update: (ctx, auth, previousService) {
-              return previousService..update(auth, previousService);
-            }),
+          create: (_) => ServiceProvider(),
+          update: (ctx, auth, previousService) {
+            return previousService..update(auth, previousService);
+          },
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, BookServiceProvider>(
+            create: (_) => BookServiceProvider(),
+            update: (ctx, auth, previousBook) {
+              return previousBook..update(auth, previousBook);
+            })
       ],
       child: Consumer<ProfileProvider>(
         builder: (ctx, profile, _) => MaterialApp(
@@ -66,6 +76,8 @@ class MyApp extends StatelessWidget {
           ),
           routes: {
             DashboardScreen.routeName: (ctx) => DashboardScreen(),
+            ServiceDetailScreen.routeName: (ctx) => ServiceDetailScreen(),
+            BookStatusScreen.routeName: (ctx) => BookStatusScreen(),
           },
         ),
       ),

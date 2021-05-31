@@ -7,7 +7,6 @@ import './../service-item.dart';
 class HomeDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Provider.of<ServiceProvider>(context, listen: false).fetchServices();
     return FutureBuilder(
       future:
           Provider.of<ServiceProvider>(context, listen: false).fetchServices(),
@@ -20,16 +19,30 @@ class HomeDashboard extends StatelessWidget {
           return Center(child: Text('There is an Error'));
         } else {
           return Consumer<ServiceProvider>(
-              builder: (ctx, serviceData, child) => ListView.builder(
-                    itemBuilder: (ctx, index) {
-                      return ServiceItem(
-                        price: serviceData.services[index].price,
-                        userName: serviceData.services[index].profile.userName,
-                        work: serviceData.services[index].name,
-                        workType: serviceData.services[index].workType,
-                      );
-                    },
-                    itemCount: serviceData.services.length,
+              builder: (ctx, serviceData, child) => Center(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 300,
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          childAspectRatio: 3 / 2,
+                          crossAxisSpacing: 20,
+                          mainAxisSpacing: 30,
+                        ),
+                        itemBuilder: (ctx, index) {
+                          return ServiceItem(
+                            price: serviceData.services[index].price,
+                            userName:
+                                serviceData.services[index].profile.userName,
+                            work: serviceData.services[index].name,
+                            workType: serviceData.services[index].workType,
+                            id: serviceData.services[index].id,
+                          );
+                        },
+                        itemCount: serviceData.services.length,
+                      ),
+                    ),
                   ));
         }
       },
