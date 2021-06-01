@@ -49,7 +49,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
       price: widget.service.price,
       sId: widget.service.id,
       uId: _uId,
-      time: _selectedDate,
+      date: _selectedDate,
       hours: _hours,
     );
     Provider.of<BookServiceProvider>(ctx, listen: false).bookServices(_booking);

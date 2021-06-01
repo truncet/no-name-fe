@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum Status {
   Scheduled,
   Pending,
@@ -9,7 +11,8 @@ class Booking {
   final String id;
   final String sId;
   final String uId;
-  final DateTime time;
+  final DateTime date;
+  final TimeOfDay time;
   final double price;
   final Status status;
   final int hours;
@@ -19,6 +22,7 @@ class Booking {
     this.sId,
     this.uId,
     this.time,
+    this.date,
     this.price,
     this.status = Status.Pending,
     this.hours,

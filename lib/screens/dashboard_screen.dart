@@ -20,6 +20,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     DiscoverDashboard(),
     ProfileDashboard(),
   ];
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {

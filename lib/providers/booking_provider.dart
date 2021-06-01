@@ -30,7 +30,41 @@ class BookServiceProvider with ChangeNotifier {
     _status = service == null ? '' : service._status;
   }
 
-  void addBookings(String response) {}
+  Status getStatus(String status) {
+    switch (status) {
+      case "Status.Scheduled":
+        return Status.Scheduled;
+      case "Status.Pending":
+        return Status.Pending;
+      case "Status.Cancelled":
+        return Status.Cancelled;
+      case "Status.Completed":
+        return Status.Completed;
+      default:
+        return Status.Pending;
+    }
+  }
+
+  List<Booking> addBookings(List bookings) {
+    List<Booking> _loadedBookings = [];
+    for (var i = 0; i < bookings.length; i++) {
+      final uniqBook = bookings[i] as Map<String, dynamic>;
+      final booking = Booking(
+        id: uniqBook['booking_id'],
+        hours: uniqBook['hours'],
+        price: double.parse(uniqBook['cost']),
+        sId: uniqBook['service_id'].toString(),
+        date: DateTime.parse(
+          uniqBook['date'],
+        ),
+        status: getStatus(uniqBook['status']),
+        time: uniqBook['time'],
+        uId: uniqBook['user_id'].toString(),
+      );
+      _loadedBookings.add(booking);
+    }
+    return _loadedBookings;
+  }
 
   Future<void> fetchBookings() async {
     final url = Uri.parse("http://192.168.1.20:5000/booking");
@@ -40,10 +74,11 @@ class BookServiceProvider with ChangeNotifier {
     };
     final response = await http.get(url, headers: headers);
     if (response.statusCode == 200) {
-      addBookings(response.body);
+      final extractedData = json.decode(response.body) as List<dynamic>;
+      final myBookings = addBookings(extractedData);
+      _bookings = myBookings;
     }
-
-    print(json.decode(response.body));
+    notifyListeners();
   }
 
   Future<Booking> bookServices(
@@ -57,26 +92,26 @@ class BookServiceProvider with ChangeNotifier {
     _estimatedCost = booking.price * booking.hours;
     _sId = booking.sId;
     _uId = booking.uId;
-    _dateTime = booking.time;
+    _dateTime = booking.date;
     _bookId = booking.id;
     _status = Status.Pending;
 
-    final response = await http.post(url,
-        headers: headers,
-        body: json.encode({
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: json.encode(
+        {
           'sId': _sId,
           'uId': _uId,
           'price': _estimatedCost.toString(),
           'date': _dateTime.toIso8601String(),
           'bookid': _bookId,
           'status': _status.toString(),
-        }));
-    if (response.statusCode == 200) {
-      notifyListeners();
-      return booking;
-      //_addNewBooking(booking);
-    }
+          'hours': booking.hours,
+        },
+      ),
+    );
+
     notifyListeners();
-    return Booking();
   }
 }
