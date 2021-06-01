@@ -1,10 +1,18 @@
+enum Status {
+  Scheduled,
+  Pending,
+  Completed,
+  Cancelled,
+}
+
 class Booking {
   final String id;
   final String sId;
   final String uId;
-  final String time;
+  final DateTime time;
   final double price;
-  final String status;
+  final Status status;
+  final int hours;
 
   Booking({
     this.id,
@@ -12,6 +20,11 @@ class Booking {
     this.uId,
     this.time,
     this.price,
-    this.status,
+    this.status = Status.Pending,
+    this.hours,
   });
+
+  set status(Status stat) {
+    this.status = stat;
+  }
 }

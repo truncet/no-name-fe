@@ -14,7 +14,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   List<dynamic> _widgets = [
     HomeDashboard(),
     DiscoverDashboard(),

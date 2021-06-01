@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:no_name/providers/booking_provider.dart';
+import 'package:provider/provider.dart';
 
 import './../screens/book-status-screen.dart';
 import './../models/service.dart';
+import './../models/booking.dart';
+import './../providers/auth_provider.dart';
 
 class ConfirmBooking extends StatefulWidget {
   final Service service;
@@ -39,6 +43,16 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
     if (_hours <= 0 || _selectedDate == null) {
       return;
     }
+    final _uId = Provider.of<AuthProvider>(ctx, listen: false).userId;
+    final _booking = Booking(
+      id: DateTime.now().toIso8601String(),
+      price: widget.service.price,
+      sId: widget.service.id,
+      uId: _uId,
+      time: _selectedDate,
+      hours: _hours,
+    );
+    Provider.of<BookServiceProvider>(ctx, listen: false).bookServices(_booking);
     Navigator.of(ctx).pushReplacementNamed(BookStatusScreen.routeName);
   }
 
@@ -138,6 +152,14 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                   ],
                 ),
               ),
+              IconButton(
+                  icon: Icon(Icons.time_to_leave),
+                  onPressed: () {
+                    showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+                  }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

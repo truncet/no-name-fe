@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/service_provider.dart';
-import '../providers/auth_provider.dart';
 import '../widgets/confirm-booking.dart';
-import '../models/service.dart';
 
 class ServiceDetailScreen extends StatelessWidget {
   static final routeName = "/service-detail-screen";
@@ -12,7 +10,6 @@ class ServiceDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context).settings.arguments as String;
-    final authData = Provider.of<AuthProvider>(context, listen: false);
     final serviceData = Provider.of<ServiceProvider>(context, listen: false);
     final service = serviceData.specificService(id);
 
@@ -80,11 +77,6 @@ class ServiceDetailScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           _showDialog(context);
-                          // serviceData.bookServices(
-                          //   service.id,
-                          //   authData.userId,
-                          //   service.price,
-                          // );
                         },
                         child: Text('BOOK'),
                       ),

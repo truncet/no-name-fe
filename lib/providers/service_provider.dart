@@ -61,27 +61,6 @@ class ServiceProvider with ChangeNotifier {
     return serviceDataExtracted;
   }
 
-  Future<void> bookServices(
-    String id,
-    String uId,
-    double price,
-  ) async {
-    final url = Uri.parse("http://192.168.1.20:5000/booking/");
-    final headers = {
-      'Content-type': 'application/json',
-      'Authorization': 'Bearer $token'
-    };
-
-    final response = await http.post(url,
-        headers: headers,
-        body: json.encode({
-          'id': id,
-          'uId': uId,
-          'price': price.toString(),
-        }));
-    notifyListeners();
-  }
-
   Future<void> fetchServices() async {
     final url = Uri.parse("http://192.168.1.20:5000/service/getall");
     final headers = {
